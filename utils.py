@@ -21,7 +21,7 @@ def extract_text_from_pdf(file_path):
     
 def _create_matcher():
     # Read skills from CSV file
-    file_path='src\data\skills.csv'
+    file_path='data\skills.csv'
     with open(file_path, 'r') as file:
         csv_reader = csv.reader(file)
         skills = [row for row in csv_reader]
@@ -73,7 +73,7 @@ def _ngrams(string, n=3):
     
 def recommend_jobs(skills):
     # Loading jobs dataset:
-    jd_df=pd.read_csv('src\data\jd_structured_data.csv')
+    jd_df=pd.read_csv('data\jobs.csv')
 
     vectorizer = TfidfVectorizer(min_df=1, analyzer=_ngrams, lowercase=False)
     tfidf = vectorizer.fit_transform(skills)
@@ -99,5 +99,4 @@ def recommend_jobs(skills):
 
     # Following recommends Top 5 Jobs based on candidate resume:
     jd_df['Match Confidence']=matches['Match confidence']
-    jd_df.to_csv("test.csv",index=False)
     return jd_df.sort_values('Match Confidence',ascending=[False]).head(10)
