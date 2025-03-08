@@ -18,10 +18,11 @@ def extract_text_from_pdf(file_path):
         for page in pdf.pages:
             text += page.extract_text()
         return text
-    
+
+
 def _create_matcher():
     # Read skills from CSV file
-    file_path='data\skills.csv'
+    file_path = 'data\skills.csv'
     with open(file_path, 'r') as file:
         csv_reader = csv.reader(file)
         skills = [row for row in csv_reader]
@@ -35,10 +36,12 @@ def _create_matcher():
     # Add skill patterns to the matcher
     for pattern in skill_patterns:
         matcher.add('Skills', [pattern])
-    
+
     return matcher
 
 # Function to extract skills from text
+
+
 def extract_skills(text):
     doc = nlp(text)
     matcher = _create_matcher()
@@ -50,30 +53,29 @@ def extract_skills(text):
     return list(skills)
 
 
-
-
 def _ngrams(string, n=3):
     # string = fix_text(string) # fix text
-    string = string.encode("ascii", errors="ignore").decode() #remove non ascii chars
+    # remove non ascii chars
+    string = string.encode("ascii", errors="ignore").decode()
     string = string.lower()
-    chars_to_remove = [")","(",".","|","[","]","{","}","'"]
+    chars_to_remove = [")", "(", ".", "|", "[", "]", "{", "}", "'"]
     rx = '[' + re.escape(''.join(chars_to_remove)) + ']'
     string = re.sub(rx, '', string)
     string = string.replace('&', 'and')
     string = string.replace(',', ' ')
     string = string.replace('-', ' ')
-    string = string.title() # normalise case - capital at start of each word
-    string = re.sub(' +',' ',string).strip() # get rid of multiple spaces and replace with a single
-    string = ' '+ string +' ' # pad names for ngrams...
-    string = re.sub(r'[,-./]|\sBD',r'', string)
+    string = string.title()  # normalise case - capital at start of each word
+    # get rid of multiple spaces and replace with a single
+    string = re.sub(' +', ' ', string).strip()
+    string = ' ' + string + ' '  # pad names for ngrams...
+    string = re.sub(r'[,-./]|\sBD', r'', string)
     ngrams = zip(*[string[i:] for i in range(n)])
     return [''.join(ngram) for ngram in ngrams]
 
 
-    
 def recommend_jobs(skills):
     # Loading jobs dataset:
-    jd_df=pd.read_csv('data\jobs.csv')
+    jd_df = pd.read_csv('data\job_dataset.csv')
 
     vectorizer = TfidfVectorizer(min_df=1, analyzer=_ngrams, lowercase=False)
     tfidf = vectorizer.fit_transform(skills)
@@ -89,14 +91,14 @@ def recommend_jobs(skills):
     distances, indices = getNearestN(jd_test)
     matches = []
 
-    for i,j in enumerate(indices):
-        dist=round(distances[i][0],5)
-    
+    for i, j in enumerate(indices):
+        dist = round(distances[i][0], 5)
+
         temp = [dist]
         matches.append(temp)
-        
+
     matches = pd.DataFrame(matches, columns=['Match confidence'])
 
     # Following recommends Top 5 Jobs based on candidate resume:
-    jd_df['Match Confidence']=matches['Match confidence']
-    return jd_df.sort_values('Match Confidence',ascending=[False]).head(10)
+    jd_df['Match Confidence'] = matches['Match confidence']
+    return jd_df.sort_values('Match Confidence', ascending=[False]).head(10)

@@ -1,6 +1,54 @@
 import streamlit as st
 import hmac
+import base64
 
+# Function to get the base64 encoding of the image
+def get_base64_of_bin_file(bin_file):
+    with open(bin_file, 'rb') as f:
+        return base64.b64encode(f.read()).decode()
+
+# Path to your local image
+header_img_path = 'data/header.jpg'
+header_img_base64 = get_base64_of_bin_file(header_img_path)
+
+bg_img_path = 'data/background.jpg'
+bg_img_base64 = get_base64_of_bin_file(bg_img_path)
+
+st.set_page_config(layout="wide")
+page_bg_img = f"""
+<style>
+[data-testid="stHeader"]{{
+background-image: url("data:image/jpg;base64,{header_img_base64}");
+background-repeat: no-repeat;
+background-size: 10%;
+background: rgba(0,0,0,0);
+width: 100%
+height: 20%;
+}}
+[data-testid="stAppViewContainer"]{{
+background-image: url("data:image/jpg;base64,{bg_img_base64}");
+background-size: 180%;
+background-position: top left;
+background-repeat: no-repeat;
+background-attachment: local;
+}}
+
+[data-testid="stSidebar"] > div:first-child {{
+background-position: center; 
+background-repeat: no-repeat;
+background-attachment: fixed;
+}}
+
+
+
+[data-testid="stToolbar"] {{
+right: 2rem;
+}}
+</style>
+"""
+
+st.markdown(page_bg_img, unsafe_allow_html=True)
+st.title("AI-Powered Job Portal")
 def login():
     """Returns `True` if the user had a correct password."""
 
