@@ -12,8 +12,9 @@ import pdfplumber
 nlp = spacy.load('en_core_web_sm')
 
 
-def extract_text_from_pdf(file_path):
-    with pdfplumber.open(file_path) as pdf:
+def extract_text_from_pdf(uploaded_file):
+
+    with pdfplumber.open(uploaded_file) as pdf:
         text = ""
         for page in pdf.pages:
             text += page.extract_text()

@@ -14,8 +14,8 @@ nlp = spacy.load("en_core_web_sm")
 
 
 # Function to process the resume and recommend jobs
-def process_resume(file_path):
-    resume_text = extract_text_from_pdf(file_path)
+def process_resume(uploaded_file):
+    resume_text = extract_text_from_pdf(uploaded_file)
     skills = extract_skills(resume_text)
     recommendations = recommend_jobs(skills)
     return recommendations, skills
