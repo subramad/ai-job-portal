@@ -76,7 +76,7 @@ def _ngrams(string, n=3):
 
 def recommend_jobs(skills):
     # Loading jobs dataset:
-    jd_df = pd.read_csv('data\job_dataset.csv')
+    jd_df = pd.read_csv('data\jobs.csv')
 
     vectorizer = TfidfVectorizer(min_df=1, analyzer=_ngrams, lowercase=False)
     tfidf = vectorizer.fit_transform(skills)

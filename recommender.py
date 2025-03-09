@@ -48,8 +48,7 @@ if uploaded_file is not None:
     with st_lottie_spinner(animation_data, height=200):
         # Process resume and recommend jobs
         time.sleep(5)
-        file_path = uploaded_file.name
-        df_jobs, extracted_skills = process_resume(file_path)
+        df_jobs, extracted_skills = process_resume(uploaded_file)
 
         # Display recommended jobs as DataFrame
         colored_header(

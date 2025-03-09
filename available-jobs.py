@@ -13,7 +13,7 @@ colored_header(
 )
 
 
-df = pd.read_csv("data/job_dataset.csv")
+df = pd.read_csv("data/jobs.csv")
 
 filtered_df = dataframe_explorer(df[['Job Title', 'Company Name', 'Location', 'Sector']], case=False)
 st.dataframe(filtered_df, use_container_width=True)
