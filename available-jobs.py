@@ -3,6 +3,7 @@ import pandas as pd
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 from streamlit_extras.colored_header import colored_header
+from streamlit_extras.dataframe_explorer import dataframe_explorer
 
 
 colored_header(
@@ -14,7 +15,9 @@ colored_header(
 
 df = pd.read_csv("data/job_dataset.csv")
 
-st.dataframe(df[['Job Title', 'Company Name', 'Location', 'Sector']])
+filtered_df = dataframe_explorer(df[['Job Title', 'Company Name', 'Location', 'Sector']], case=False)
+st.dataframe(filtered_df, use_container_width=True)
+
 
 
 colored_header(

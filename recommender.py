@@ -59,10 +59,10 @@ if uploaded_file is not None:
         )
         # df = pd.DataFrame(['Job Title','Company Name','Location','Industry','Sector','Average Salary'])
         st.dataframe(df_jobs[['Job Title', 'Company Name',
-                     'Location', 'Sector', 'Match Confidence']])
+                     'Location', 'Sector', 'Match Confidence']],use_container_width=True)
 
         colored_header(
-            label="Skills in Resume:",
+            label="Matched Skills in your Resume:",
             color_name="violet-70",
             description=""
         )
